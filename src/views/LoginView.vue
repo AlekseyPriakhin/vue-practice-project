@@ -30,7 +30,7 @@
             />
           </div>
 
-          <button type="submit" class="btn btn-primary w-100">Войти</button>
+          <button type="submit" class="btn btn-primary w-25" >Войти</button>
         </form>
       </div>
     </div>
@@ -83,6 +83,7 @@ body {
   height: 100%;
 }
 
+
 body {
   background-color: azure;
 }
@@ -92,5 +93,6 @@ input {
 }
 button {
   border-radius: 5px;
+  margin-left: 37.5%;
 }
 </style>

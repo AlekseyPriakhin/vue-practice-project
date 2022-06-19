@@ -5,7 +5,7 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: ()=> import("../views/HomeView.vue")
+    component: () => import("../views/HomeView.vue")
   },
   {
     path: '/login',
@@ -25,7 +25,7 @@ const router = createRouter({
 router.beforeEach((to,from,next)=>
 {
   const logStatus = store.getters.accessToken;
-  if(logStatus && to.path.includes('/login'))  //router.push('/')
+  if(logStatus && to.path.includes('/login')) // router.push('/')
   if(!to.path.includes('/login'))
   {
     if(!logStatus) next('/login?message=authorization')
