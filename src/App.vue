@@ -1,9 +1,5 @@
 <template>
-  <div class="container">
-    <nav class="mb-3">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/login">Login</router-link>
-    </nav>
+  <div class="container mt-5">
     <router-view />
   </div>
 </template>
