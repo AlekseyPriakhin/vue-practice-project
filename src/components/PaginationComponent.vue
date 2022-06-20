@@ -84,7 +84,6 @@ export default {
       return this.currentPage === page;
     },
     async onClickPage(page) {
-      console.log(page);
       await this.$store.dispatch("getRecords", page);
     },
     onNextClick()

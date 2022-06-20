@@ -1,5 +1,4 @@
-
-import {getURL} from '@/helpers/url'
+import { makeRequest } from "@/helpers/request";
 const responseHandler = async (response, ctx) => {
     if (response.ok) {
         const tokens = await response.json();
@@ -43,19 +42,19 @@ export default
         },
         actions: {
             async login(ctx, payload) {
-                const path = `${getURL()}/session`;
-                console.log(path)
-
-                const log =  await fetch(path, {
+                const path = `/session`;
+                const options = {
                     method: 'POST',
                     body: JSON.stringify(payload),
                     headers:
                     {
                         'Content-Type': 'application/json'
                     }
-                }).then(res=> responseHandler(res,ctx));
+                };
+                const result = await makeRequest(path,options)
+                .then(res=> responseHandler(res,ctx));
 
-                return log;
+                return result;
 
             }
         }
