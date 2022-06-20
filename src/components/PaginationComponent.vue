@@ -85,15 +85,15 @@ export default {
     },
     async onClickPage(page) {
       console.log(page);
-      await this.$store.dispatch("toPage", page);
+      await this.$store.dispatch("getRecords", page);
     },
     onNextClick()
     {
-      this.$store.dispatch("toPage", this.currentPage + 1);
+      this.$store.dispatch("getRecords", this.currentPage + 1);
     },
      onPreviousClick()
     {
-      this.$store.dispatch("toPage", this.currentPage - 1);
+      this.$store.dispatch("getRecords", this.currentPage - 1);
     }
     
   },

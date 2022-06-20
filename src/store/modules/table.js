@@ -6,37 +6,26 @@ export default {
         currentPage : 1,
         totalPages : 10,
         perPage : 10,
+        search : ''
 
     },
     getters: {
         getRecords(state){return state.records},
         getTotalPages(state) {return state.totalPages},
-        getCurrentPage(state) {return state.currentPage}
+        getCurrentPage(state) {return state.currentPage},
+        getSearch(state) {return state.search}
     },
     mutations: {
         setCurrentPage(state,pageNum) {state.currentPage = pageNum},
         setRecords(state,newRecords){state.records = newRecords},
-        setTotalPages(state,totalPages){state.totalPages = totalPages}
+        setTotalPages(state,totalPages){state.totalPages = totalPages},
+        setSearch(state,newSearch) {state.search = newSearch}
     },
     actions: {
 
-        async getRecords(ctx)
+        async getRecords(ctx,pageNum)
         {
-            const path = `https://naim.rzdit.ru/car_types?per_page=10&page=2`;
-            const result = await fetch(path,{
-                method:'GET',
-                headers:
-                {
-                  'Content-Type':'application/json',
-                  'Authorization': `Bearer ${localStorage.getItem('access')}`
-                }
-              }
-                ).then(res => res.json());
-            ctx.commit('setRecords',result.data)
-        },
-        async toPage(ctx,pageNum)
-        {
-            const path = `${getURL()}/car_types?per_page=10&page=${pageNum}&sort_desc[]=true&sort_by[]=id`;
+            const path = `${getURL()}/car_types?per_page=10&page=${pageNum}&search=${this.getters.getSearch}`;
             const result = await fetch(path,{
                 method:'GET',
                 headers:
@@ -50,6 +39,7 @@ export default {
             ctx.commit('setTotalPages',result.total_pages)
             ctx.commit('setRecords',result.data)
             
-        }
+        },
+        search(ctx,search){ctx.commit('setSearch',search)}
     }
   }

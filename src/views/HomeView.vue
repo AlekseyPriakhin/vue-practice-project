@@ -38,7 +38,7 @@ export default {
   },
   watch: {
     searchQueryString : function() {
-      this.debouncedPrint()
+      this.debouncedSearch()
     },
   },
   computed: {
@@ -47,18 +47,22 @@ export default {
     },
   },
   created: function () {
-    this.debouncedPrint = debounce(this.print, 750)
+    this.debouncedSearch = debounce(this.search, 750)
   },
   methods: {
-    print() {
-      if(this.searchQueryString.length > 3) console.log(this.searchQueryString)
+    search() {
+      if(this.searchQueryString.length > 3 || !this.searchQueryString ) 
+      {
+        this.$store.dispatch("search",this.searchQueryString);
+        this.$store.dispatch("getRecords", 1);
+      }
     },
     click() {
-      this.$store.dispatch("toPage", 1);
+      this.$store.dispatch("getRecords", 1);
     },
   },
   mounted() {
-    this.$store.dispatch("toPage", 1);
+    this.$store.dispatch("getRecords", 1);
   },
   components: {
     Pagination,
