@@ -1,6 +1,6 @@
 <template>
-    <img v-if="option" src="@/assets/arrow_down.png">
-    <img v-else src="@/assets/arrow_up.png">
+    <img class="arrow" v-show="option" src="../assets/arrow_down.png">
+    <img class ="arrow" v-show="!option" src="../assets/arrow_up.png">
 </template>
 <script>
 
@@ -10,7 +10,7 @@ export default{
 </script>
 
 <style scoped>
-img
+.arrow
 {
     margin-top:2px;
     width:20px;

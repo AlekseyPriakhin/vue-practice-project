@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import store from '../store'
+//import store from '../store'
 
 const routes = [
   {
@@ -19,16 +19,11 @@ const router = createRouter({
   routes
 })
 
-router.beforeEach((to,from,next)=>
+router.beforeEach((to)=>
 {
-  const logStatus = store.getters.accessToken;
-  if(logStatus && to.path.includes('/login')) // router.push('/')
-  if(!to.path.includes('/login'))
-  {
-    if(!logStatus) next('/login?message=authorization')
-  }
- 
-  next();
+  const logStatus = localStorage.getItem('access');
+  if(logStatus && to.path.includes('/login'))  router.push(to.path)
+  if(!to.path.includes('/login') && !logStatus ) router.push('login')
 })
 
 export default router

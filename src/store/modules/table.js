@@ -5,7 +5,7 @@ function getPath(page, per_page, search, sort) {
   let path = `/car_types?per_page=${per_page}&page=${page}`;
   if (search) path += `&search=${search}`;
 
-  if (sort.length === 1) path += `&sort_by[]=${sort[0].id}&sort_desc[]=${sort[0].isDesc}`;
+  if (sort && sort.length === 1) path += `&sort_by[]=${sort[0].id}&sort_desc[]=${sort[0].isDesc}`;
 
   return path;
 }
@@ -37,14 +37,14 @@ export default {
     setTotalPages(state, totalPages) { state.totalPages = totalPages },
     setSearch(state, newSearch) { state.search = newSearch },
     setSortOptions(state, sortBy) {
-      state.sortOptions.forEach(e => {
-        if (e.id !== sortBy) {
-          e.isDesc = false;
-          e.isActive = false
+      state.sortOptions.forEach(option => {
+        if (option.id !== sortBy) {
+          option.isDesc = false;
+          option.isActive = false
         }
         else {
-          e.isActive = true,
-            e.isDesc = !e.isDesc
+          option.isActive = true,
+          option.isDesc = !option.isDesc
         }
       });
     }
@@ -52,8 +52,8 @@ export default {
   actions: {
 
     async getRecords(ctx, pageNum = 1) {
-      let search = this.getters.getSearch;
-      let sort = this.getters.getSortOptions.filter(e => e.isActive === true);
+      const search = this.getters.getSearch;
+      const sort = this.getters.getSortOptions.filter(e => e.isActive === true);
       const options = {
         method: 'GET',
         headers:
@@ -62,7 +62,7 @@ export default {
           'Authorization': `Bearer ${localStorage.getItem('access')}`
         }
       }
-      let path = getPath(pageNum, ctx.state.perPage, search, sort);
+      const path = getPath(pageNum, ctx.state.perPage, search, sort);
       const result = await makeRequest(path, options).then(res => res.json());
 
       ctx.commit('setCurrentPage', pageNum)

@@ -18,7 +18,7 @@ const responseHandler = async (response, ctx) => {
 export default
     {
         state: {
-            isNotValid: false,
+            isValid: true,
             isLogin: false,
             access: localStorage.getItem('access') || '',
             refresh: localStorage.getItem('refresh') || ''

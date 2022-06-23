@@ -15,7 +15,7 @@
           :disabled="page.isDisabled"
           @click="onClickPage(page.name)"
           class="btn btn-success"
-          :class="{ active: page.isDisabled }"
+          :class="{ active: page.isDisabled}"
           :aria-label="`Go to page number`"
         >
           {{ page.name }}
@@ -98,7 +98,7 @@ export default {
   },
 };
 </script>
-<style scoped>
+<style>
 /* .active {
   background-color: #4aae9b;
   color: #ffffff;

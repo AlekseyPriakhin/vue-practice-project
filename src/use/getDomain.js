@@ -1,0 +1,1 @@
+export const useDomain = ()=>"https://naim.rzdit.ru"

@@ -5,17 +5,15 @@
         <h3 class="text-center mb-3">Вход</h3>
         <form @submit.prevent="submit">
           <div class="form-group mb-3">
-            <label for="loginInput">Email</label>
+            <label for="loginInput">Логин</label>
             <input
               type="text"
               v-model="login"
               class="form-control w-100"
-              :class="{ 'is-invalid': isInvalid }"
+              :class="{ 'is-invalid': !isValid }"
               id="loginInput"
               aria-describedby="loginValidation"
             />
-            <div id="loginValidation" class="invalid-feedback" v-if="isInvalid">
-            </div>
           </div>
           <div class="form-group mb-3">
             <label for="passwordInput">Пароль</label>
@@ -23,7 +21,7 @@
               type="password"
               v-model="password"
               class="form-control w-100"
-              :class="{ 'is-invalid': isInvalid }"
+              :class="{ 'is-invalid': !isValid }"
               id="passwordInput"
               aria-describedby="passwordValidation"
             />
@@ -41,35 +39,28 @@ export default {
     return {
       login: "",
       password: "",
+      isValid : true
     };
   },
+
   computed: {
-    isInvalid() {
-      return this.$store.getters.isNotValid;
-    },
   },
+
   methods: {
      async submit() {
        const res = await this.$store.dispatch("login", {
         login: this.login,
         password: this.password,
       })
-      if(res) this.$router.push('/')
+      if(res) {
+        this.$router.push('/')}
+      else this.isValid = false
     },
   },
 };
 </script>
 
 <style scoped>
-html,
-body {
-  height: 100%;
-}
-
-
-body {
-  background-color: azure;
-}
 input {
   border-radius: 5px;
   width: 30%;
