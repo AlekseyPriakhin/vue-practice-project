@@ -1,20 +1,23 @@
 <template>
   <ul class="pagination">
-    <li class="pagination-item">
+    <li class="material-icons previous">
       <button
         type="button"
-        :disabled="isFirstPage"
-        class="btn btn-success"
         aria-label="Go to previous page"
-        @click="onPreviousClick">
-        &#60;
+        :disabled="isFirstPage"
+        @click="onPreviousClick"
+      >
+        chevron_left
       </button>
     </li>
-    <li class="pagination-item" v-for="page in pages" :key="page.name">
+    <li
+      v-for="page in pages"
+      :key="page.name"
+      class="pagination-item page-btn-with-num"
+    >
       <button
         type="button"
         :disabled="page.isDisabled"
-        class="btn btn-success"
         :class="{ active: page.isDisabled }"
         :aria-label="`Go to page number`"
         @click="onClickPage(page.name)"
@@ -23,85 +26,152 @@
       </button>
     </li>
 
-    <li class="pagination-item">
+    <li class="material-icons next">
       <button
         type="button"
-        :disabled="isLastPage"
-        class="btn btn-success"
-        @click="onNextClick"
         aria-label="Go to next page"
+        :disabled="isLastPage"
+        @click="onNextClick"
       >
-        >
+        chevron_right
       </button>
     </li>
   </ul>
 </template>
 
 <script>
-import { ref,toRef,computed } from "vue";
+import { toRef, computed } from "vue";
+
 export default {
-  props:{totalPages : {type:Number,require : true}},
-  setup(props,context) {
-    const maxVisibleButtons = 9;
-    const currentPage = ref(1);
+  props: {
+    totalPages: { 
+      type: Number, 
+      require: true, 
+      default : 1
+      },
+    cp: { 
+      type: Number, 
+      require: true, 
+      default : 1 
+      }
+  },
 
-    const totalPages = toRef(props,'totalPages');
-    
-    
-    const isFirstPage = computed(()=>currentPage.value === 1);
+  emits: ["toPage"],
 
-    const isLastPage = computed(()=> currentPage.value === totalPages.value)
+  setup(props, context) {
 
-    const startPage = computed(()=>
-    {
-      if(currentPage.value <= 5 ) return 1;
-      if(currentPage.value === totalPages.value) return totalPages.value-maxVisibleButtons;
-      return currentPage.value - 4;
-    })
+    const maxVisibleButtons = 6;
+    const totalPages = toRef(props, "totalPages");
+    const currentPage = toRef(props, "cp");
 
-    const endPage = computed(()=> Math.min(totalPages.value,startPage.value + maxVisibleButtons - 1));
-    
-    const pages = computed(()=>
-    {
-    const range = []
-     for(let i = startPage.value;i<= endPage.value;i++ ) {
-     range.push({name : i,isDisabled : i === currentPage.value});
-     }
-     return range;
+    const isFirstPage = computed(() => currentPage.value === 1);
+    const isLastPage = computed(() => currentPage.value === totalPages.value);
+
+    const startPage = computed(() => {
+      let value = 0;
+      if (currentPage.value <= 3) return 1;
+
+      if (currentPage.value === totalPages.value)
+        return totalPages.value - maxVisibleButtons + 1;
+
+      if (totalPages.value - currentPage.value < 3)
+        value = 3 - (totalPages.value - currentPage.value);
+
+      return currentPage.value - 2 - value;
     });
 
-    const onClickPage = (page)=> setNewCurrentPggeAndMakeEmit(page)
+    const endPage = computed(() =>
+      Math.min(totalPages.value, startPage.value + maxVisibleButtons - 1)
+    );
 
-    const onNextClick = ()=> setNewCurrentPggeAndMakeEmit(currentPage.value + 1)
+    const pages = computed(() => {
+      const range = [];
+      for (let i = startPage.value; i <= endPage.value; i++) {
+        range.push({ name: i, isDisabled: i === currentPage.value });
+      }
 
-    const onPreviousClick = ()=> setNewCurrentPggeAndMakeEmit(currentPage.value- 1)
+      return range;
+    });
 
+    const onClickPage = (page) => setNewCurrentPageAndMakeEmit(page);
 
+    const onNextClick = () => setNewCurrentPageAndMakeEmit(currentPage.value + 1);
 
-    function setNewCurrentPggeAndMakeEmit(page)
-    {
-      currentPage.value = page;
-      context.emit('toPage',page)
-    }
+    const onPreviousClick = () => setNewCurrentPageAndMakeEmit(currentPage.value - 1);
 
-    return { pages,
-    isFirstPage,
-    isLastPage,
-    onClickPage,
-    onNextClick,
-    onPreviousClick, };
+    const setNewCurrentPageAndMakeEmit = (page) => context.emit("toPage", page);
+
+    return {
+      pages,
+      isFirstPage,
+      isLastPage,
+      onClickPage,
+      onNextClick,
+      onPreviousClick,
+    };
   },
 };
 </script>
 
 <style scoped>
-.pagination-item{
-  margin-left: 2px;
-  border-radius: 5px;
+.pagination {
+  margin-left: 540px;
 }
-.pagination
-{
-  margin-left: 30%;
+
+.pagination-item {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+  letter-spacing: 0.5px;
+  padding: 0px;
+}
+
+.pagination button {
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  margin: 0px;
+  width: 34px;
+  height: 34px;
+  background: #ffffff;
+  text-align: center;
+}
+
+.page-btn-with-num
+ {
+  margin-left: 9.8px;
+}
+
+/* Активная кнопка */
+
+.page-btn-with-num
+ .active {
+  background-color: #6b8cad;
+  color: #f2f2f2;
+}
+
+.pagination :nth-child(2) {
+  margin-left: 0px;
+}
+
+.next,
+.previous {
+  width: 34px;
+  height: 34px;
+}
+
+.next button,
+.previous button {
+  padding: 4px;
+}
+
+.next {
+  margin-left: 14.8px;
+}
+
+.previous {
+  margin-right: 14.8px;
 }
 </style>
 

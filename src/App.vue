@@ -1,9 +1,12 @@
 <template>
-  <div class="container mt-5">
-    <router-view />
-  </div>
+  <img 
+    class="logo" 
+    src="logo.png"
+  >
+  <router-view />
 </template>
 
 <style>
-@import url('../src/main.css');
+@import url('../src/styles/main.css');
+@import url('../src/styles/bootstrap.min.css');
 </style>

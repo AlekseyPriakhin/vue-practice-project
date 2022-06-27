@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { checkAuth } from '@/services/AuthService'
 //import store from '../store'
 
 const routes = [
@@ -10,7 +11,7 @@ const routes = [
   {
     path: '/login',
     name: 'login',
-    component: () => import( '../views/LoginView.vue')
+    component: () => import('../views/LoginView.vue')
   }
 ]
 
@@ -19,11 +20,13 @@ const router = createRouter({
   routes
 })
 
-router.beforeEach((to)=>
-{
-  const logStatus = localStorage.getItem('access');
-  if(logStatus && to.path.includes('/login'))  router.push(to.path)
-  if(!to.path.includes('/login') && !logStatus ) router.push('login')
+router.beforeEach((to) => {
+  if (!to.path.includes('/login') && !checkAuth()) {
+      router.push('/login')
+  }
+  else if (to.path.includes('/login') && checkAuth(router)) {
+    router.push('/');
+  }
 })
 
 export default router
