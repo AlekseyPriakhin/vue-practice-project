@@ -5,6 +5,12 @@
   src: local('Material Icons'),
     local('MaterialIcons-Regular'),
 }
+@font-face {
+  font-family: 'Roboto', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  src: local('Roboto'),
+}
 
 .material-icons {
   font-family: 'Material Icons';
@@ -25,7 +31,7 @@
 }
 
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Roboto', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
