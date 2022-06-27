@@ -78,13 +78,13 @@ export default {
     const tableHeaders = ref(
       useTableHeaders([
         { id: "id", name: "id", priority: 1 },
-        { id: "name", name: "Название", priority: 2 },
+        { id: "name", name: "Полное название", priority: 2 },
         { id: "short_name", name: "Короткое название", priority: 3 },
         { id: "code", name: "Код вагона", priority: 4 },
       ])
     );
 
-    onMounted(async () => setRecords(1));
+    onMounted(async () => setRecords());
 
     const setRecords = async (page) => {
       const result = await getRecords(

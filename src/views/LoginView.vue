@@ -32,6 +32,11 @@
         Отправить
       </button>
     </form>
+    <button class="chat-btn">
+      <span class="material-icons chat">
+        chat
+      </span>
+    </button>
   </div>
 </template>
 <script>
@@ -140,6 +145,29 @@ export default {
     font-weight: 500;
     font-size: 14px;
     line-height: 36px;
+}
+
+.chat-btn
+{
+  position: absolute;
+  width: 72px;
+  height: 72px;
+  left: 1628px;
+  top: 839px;
+  border: 0px;
+  background: rgba(255, 255, 255, 0.67);
+  backdrop-filter: blur(14px);
+  border-radius: 54px;
+  
+}
+
+.chat
+{
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 20px;
+  margin-top: 15px;
+  color: rgba(0, 0, 0, 0.87);
 }
 
 </style>
