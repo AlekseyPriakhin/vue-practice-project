@@ -4,6 +4,7 @@
   font-weight: 400;
   src: local('Material Icons'),
     local('MaterialIcons-Regular'),
+    url('../../public/MaterialIcons-Regular.ttf') format('truetype');
 }
 @font-face {
   font-family: 'Roboto', sans-serif;
