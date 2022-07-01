@@ -1,23 +1,11 @@
 <template>
-  <div class="wrapper">
-    <table-component />
-  </div>
+  <Table />
 </template>
 
-<script>
-import TableComponent from "../components/TableComponent.vue";
-//import debounce from "lodash.debounce";
-export default {
-  components: {
-    TableComponent,
-  },
-};
+<script setup>
+
+import Table from "../components/CarTypesTable.vue";
+
 </script>
 
-<style>
-.wrapper {
-  position: absolute;
-  margin: 135px 40px;
-}
-</style>
 

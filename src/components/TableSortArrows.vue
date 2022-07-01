@@ -1,35 +1,45 @@
 <template>
   <span 
     v-show="option" 
-    class="material-icons arrow"
+    class="material-icons"
+    :class="style.arrow"
   >
     arrow_downward
   </span>
   <span 
     v-show="!option" 
-    class="material-icons arrow"
+    class="material-icons"
+    :class="style.arrow"
   >
     arrow_upward
   </span>
 </template>
-<script>
 
-export default{
-    props : { 
+
+<script setup>
+
+import {defineProps,useCssModule} from 'vue'
+
+const style = useCssModule();
+
+defineProps({
     option : { 
     type : Boolean,
     require : true
     }
   }
-}
+)
+
 </script>
 
-<style scoped>
+
+<style module>
 
 .arrow
-{
-    font-size: 18px;
+{ 
     margin-bottom: 15px;
+    font-size: 18px;
+    color: var(--black-font-color);
     width:18px;
     height:18px;
     float: right;

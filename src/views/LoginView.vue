@@ -1,18 +1,17 @@
 <template>
-  <div class="background">
+  <div :class="style['background']">
     <form 
-      class="main"
+      :class="style['auth-form']"
       @submit.prevent="onLogin" 
     >
-      <h3 class="form-header">
+      <h3 :class="style['form-header']">
         Авторизация
       </h3>
       <input
         id="loginInput"
         v-model="loginField"
         type="text"
-        class="auth-input"
-        :class="{ 'invalid': !isValid }"
+        :class="fieldStyles"
         aria-describedby="loginValidation"
         placeholder="Имя пользователя"
       >
@@ -20,56 +19,64 @@
         id="passwordInput"
         v-model="passwordField"
         type="password"
-        class="auth-input"
-        :class="{ 'invalid': !isValid }"
+        :class="fieldStyles"
         aria-describedby="passwordValidation"
         placeholder="Пароль"
       >
       <button 
         type="submit" 
-        class="auth-send"
+        :class="style['auth-send']"
       >
         Отправить
       </button>
     </form>
-    <button class="chat-btn">
-      <span class="material-icons chat">
+    <button :class="style['chat-btn']">
+      <span 
+        class="material-icons"
+        :class="style['chat']"
+      >
         chat
       </span>
     </button>
   </div>
 </template>
-<script>
-import {ref} from 'vue'
+
+
+<script setup>
+
+import {computed, ref, useCssModule} from 'vue'
 import {login} from '../services/AuthService.js'
 import {useRouter} from 'vue-router'
-export default {
 
-  setup()
-  {
-    const isValid = ref(true);
-    const loginField = ref('');
-    const passwordField = ref('');
-    const router = useRouter();
+const style = useCssModule();
 
-    const onLogin = async ()=>
-    {
-       isValid.value = await login(router,loginField.value,passwordField.value);
-    }
+const isValid = ref(true);
+const loginField = ref('');
+const passwordField = ref('');
 
-    return {
-      isValid,
-      loginField,
-      passwordField,
-      onLogin,
-    }
-  }
-};
+const router = useRouter();
+
+const onLogin = async ()=>
+{
+  isValid.value = await login(router,loginField.value,passwordField.value);
+}
+
+const fieldStyles = computed(()=>
+{
+  if(!isValid.value) return [style['auth-input'],style['invalid']]
+  return style['auth-input'];
+})
 
 </script>
 
 
-<style scoped>
+<style module>
+
+:root
+{
+  --form-bg-color:rgba(255, 255, 255, 0.67);
+  --auth-button-font-color: #ffffff;
+}
 
 .background {
     height: 100vh;
@@ -78,23 +85,20 @@ export default {
     background-size: cover;
 }
 
-.main {
+.auth-form {
     width: 352px;
     height: 282px;
     padding: 42px;
-    background: rgba(255, 255, 255, 0.67);
+    margin: auto;
+    background: var(--form-bg-color);
     backdrop-filter: blur(14px);
     border-radius: 4px;
     display: flex;
-    flex-wrap: wrap;
-    flex-flow: column;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    margin: auto;
 }
 
 .form-header {
-    opacity: 100%;
     width: 268px;
     height: 32px;
     margin-bottom: 16px;
@@ -109,43 +113,45 @@ export default {
 .auth-input {
     width: 268px;
     height: 41px;
-    outline: none;
-    background: #ffffff;
-    border-radius: 4px;
+    background: var(--bg-color);
     margin-bottom: 16px;
+    outline: none;
     border-width: 0px;
+    border-radius: 4px;
 }
 
 .auth-input::placeholder {
+    color: var(--black-font-color);
     text-align: center;
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
     line-height: 24px;
     letter-spacing: 0.5px;
-    color: rgba(0, 0, 0, 0.87);
+
 }
 
 .invalid {
-    border: 1px solid #e21a1a;
+    border: 2px solid var(--red-color);
 }
-
 
 .auth-send {
     padding: 0px 12px;
     width: 123px;
     height: 36px;
+    background: var(--red-color);
+    color: var(--auth-button-font-color);
     border-width: 0px;
-    background: #e21a1a;
     border-radius: 4px;
-    color: white;
+    font-weight: 500;
+    font-size: 14px;
     text-align: center;
     letter-spacing: 1.5px;
     text-transform: uppercase;
-    font-weight: 500;
-    font-size: 14px;
     line-height: 36px;
 }
+
+/* START: Кнопка чата */
 
 .chat-btn
 {
@@ -155,10 +161,9 @@ export default {
   left: 1628px;
   top: 839px;
   border: 0px;
-  background: rgba(255, 255, 255, 0.67);
+  background: var(--form-bg-color);
   backdrop-filter: blur(14px);
   border-radius: 54px;
-  
 }
 
 .chat
@@ -167,7 +172,9 @@ export default {
   font-size: 32px;
   line-height: 20px;
   margin-top: 15px;
-  color: rgba(0, 0, 0, 0.87);
+  color: var(--black-font-color);
 }
+
+/* END: Кнопка чата */
 
 </style>
