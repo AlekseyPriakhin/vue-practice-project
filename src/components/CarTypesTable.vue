@@ -1,24 +1,6 @@
 <template>
   <div :class="style['wrapper']">
-    <div>
-      <input
-        v-model="searchQueryString"
-        type="text"
-        :class="style['input-search']"
-        aria-describedby="searchHelp"
-        placeholder="Что вы ищете?"
-      >
-      <p 
-        class="material-icons" 
-        :class="style.search"
-      >
-        search
-      </p>
-      <hr :class="style.divider">
-      <p :class="style['search-input-help']">
-        Поиск можно осуществлять по id, названию, короткому названию и коду вагона
-      </p>
-    </div>
+    <SearchField @search-request="search" />
     <table :class="style['main-table']">
       <thead>
         <tr>
@@ -59,20 +41,20 @@
 
 <script setup>
 
-import { ref, onMounted, watch,useCssModule } from "vue";
+import { ref, onMounted, useCssModule } from "vue";
 import { getRecords } from "../services/CarTypesService.js";
-import debounce from "lodash.debounce";
 
 import Pagination from "./TablePagination.vue";
 import TableSortArrows from "./TableSortArrows.vue";
 import Button from "./ButtonComponent.vue";
+import SearchField from './SearchField.vue'
 
 const style = useCssModule();
 
+let searchQueryString = "";
 const per_page = 10;
 const sortOptions = [];
 
-const searchQueryString = ref("");
 const tableRecords = ref([]);
 const totalPages = ref(1);
 const currentPage = ref(1);
@@ -88,7 +70,7 @@ const tableHeaders = ref(
 onMounted(async () => setRecords());
 
 const setRecords = async (page) => {
-  const result = await getRecords(page, searchQueryString.value, sortOptions);
+  const result = await getRecords(page, searchQueryString, sortOptions);
   if (result) {
     tableRecords.value = result.data;
     if (tableRecords.value.length < per_page) {
@@ -113,25 +95,18 @@ const onSort = (header) => {
   setRecords();
 };
 
-watch(searchQueryString, (value) => {
-  if (value.length > 3 || value.length === 0) {
-    searchQueryString.value = value;
-    debouncedSearch();
-  }
-});
-
-const search = () => setRecords();
-
-const debouncedSearch = debounce(search, 750);
+const search = (queryString) =>
+{
+  searchQueryString = queryString
+  setRecords();
+};
 
 </script>
-
 
 <style module>
 
 :root
 {
-  --table-input-help-color:rgba(0, 0, 0, 0.4);
   --table-odd-row-bg-color:#f8f8f8;
   --table-even-row-bg-color:#ffffff;
   --table-column-head-font-color: #757575;
@@ -143,50 +118,6 @@ const debouncedSearch = debounce(search, 750);
   padding-top: 127px;
   margin-left: 40px;
 }
-
-/* START: Стили для строки поиска */
-
-.input-search {
-  margin-bottom: 8px;
-  width: 1319px;
-  height: 24px;
-  outline: none;
-  border-width: 0px;
-}
-
-.input-search::placeholder {
-  color: var(--black-font-color);
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 24px;                        
-  letter-spacing: 0.5px;
-}
-
-.search-input-help {
-  margin-bottom: 40px;
-  font-size: 12px;
-  font-style: normal;
-  color: var(--table-input-help-color);
-  font-weight: 400;
-  line-height: 20px;
-  letter-spacing: 0.4px;
-}
-
-.search {
-  position: absolute;
-  margin-bottom: 9px;
-  color: var(--red-color);
-  font-size: 32px;
-}
-
-.divider {
-  margin: 0px;
-  margin-bottom: 1px;
-  width: 1319px;
-}
-
-/* END: Стили для строки поиска */
 
 /* START : тело таблицы */
 
@@ -230,6 +161,7 @@ button.sort-button {
 }
 
 /* Шрифт в первой колонке */
+
 .main-table thead tr :nth-child(1) button {
   color: var(--black-font-color);
   font-size: 12px;
@@ -239,6 +171,7 @@ button.sort-button {
 }
 
 /* Шрифт в оставшихся колонках */
+
 .main-table thead tr :nth-last-child(-n + 3) button {
   color: var( --table-column-head-font-color);
   font-size: 12px;
@@ -248,6 +181,6 @@ button.sort-button {
   letter-spacing: 0.4px;
 }
 
-
 /* END : заголовки таблицы */
+
 </style>
