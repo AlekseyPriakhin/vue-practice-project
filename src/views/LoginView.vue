@@ -63,7 +63,7 @@ const onLogin = async ()=>
 
 const fieldStyles = computed(()=>
 {
-  if(!isValid.value) return [style['auth-input'],style['invalid']]
+  if(isValid.value === false) return [style['auth-input'],style['invalid']]
   return style['auth-input'];
 })
 

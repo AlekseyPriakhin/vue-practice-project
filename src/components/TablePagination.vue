@@ -4,43 +4,34 @@
       class="material-icons"
       :class="style['previous']"
     >
-      <button
-        type="button"
-        aria-label="Go to previous page"
+      <Button 
+        :name="prevButtonName"
         :disabled="isFirstPage"
-        @click="onPreviousClick"
-      >
-        chevron_left
-      </button>
+        @button-click="onPreviousClick"
+      />
     </li>
     <li
       v-for="page in pages"
       :key="page.name"
       :class="[style['pagination-item'], style['page-btn-with-num']]"
-    >
-      <button
-        type="button"
+    > 
+      <Button
+        :name="String(page.name)"
         :disabled="page.isDisabled"
         :class="{ [style.active]: page.isDisabled }"
-        :aria-label="`Go to page number`"
-        @click="onClickPage(page.name)"
-      >
-        {{ page.name }}
-      </button>
+        @button-click="onClickPage(page.name)"
+      />
     </li>
 
     <li 
       class="material-icons"
       :class="style['next']"
     >
-      <button
-        type="button"
-        aria-label="Go to next page"
+      <Button 
+        :name="nextButtonName"
         :disabled="isLastPage"
-        @click="onNextClick"
-      >
-        chevron_right
-      </button>
+        @button-click="onNextClick"
+      />
     </li>
   </ul>
 </template>
@@ -49,6 +40,8 @@
 <script setup>
 
 import { toRef, computed, defineProps, defineEmits, useCssModule} from "vue";
+
+import Button from "./ButtonComponent.vue"
 
 const emits = defineEmits(["toPage"]);
 
@@ -68,6 +61,9 @@ const props = defineProps({
 const style = useCssModule();
 
 const maxVisibleButtons = 6;
+
+const prevButtonName = "chevron_left";
+const nextButtonName = "chevron_right";
 
 const totalPages = toRef(props, "totalPages");
 const currentPage = toRef(props, "cp");

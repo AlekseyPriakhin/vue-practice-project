@@ -25,14 +25,13 @@
           <td 
             v-for="header in tableHeaders" 
             :key="header.id"
+            :style="{width: header.widthInPercents + '%'}"
           >
-            <button
-              type="button"
+            <Button 
+              :name="header.name"
               :class="style['sort-button']"
-              @click.prevent="onSort(header)"
-            >
-              {{ header.name }}
-            </button>
+              @button-click="onSort(header)"
+            />
             <TableSortArrows :option="header.isDesc" />
           </td>
         </tr>
@@ -66,6 +65,7 @@ import debounce from "lodash.debounce";
 
 import Pagination from "./TablePagination.vue";
 import TableSortArrows from "./TableSortArrows.vue";
+import Button from "./ButtonComponent.vue";
 
 const style = useCssModule();
 
@@ -78,10 +78,10 @@ const totalPages = ref(1);
 const currentPage = ref(1);
 const tableHeaders = ref(
   [
-    { id: "id", name: "id", priority: 1, isDesc : false },
-    { id: "name", name: "Полное название", priority: 2, isDesc : false },
-    { id: "short_name", name: "Короткое название", priority: 3, isDesc : false },
-    { id: "code", name: "Код вагона", priority: 4, isDesc : false },
+    { id: "id", name: "id", priority: 1, isDesc : false, widthInPercents : 10 },
+    { id: "name", name: "Полное название", priority: 2, isDesc : false, widthInPercents : 50 },
+    { id: "short_name", name: "Короткое название", priority: 3, isDesc : false, widthInPercents : 20 },
+    { id: "code", name: "Код вагона", priority: 4, isDesc : false, widthInPercents : 20 },
   ]
 )
 
@@ -248,20 +248,6 @@ button.sort-button {
   letter-spacing: 0.4px;
 }
 
-/* START: размеры колонок  */
-.main-table tbody :nth-child(1) {
-  width: 10%;
-}
-.main-table tbody :nth-child(2) {
-  width: 50%;
-}
-.main-table tbody :nth-child(3) {
-  width: 20%;
-}
-.main-table tbody :nth-child(4) {
-  width: 20%;
-}
-/* END: размеры колонок  */
 
 /* END : заголовки таблицы */
 </style>
