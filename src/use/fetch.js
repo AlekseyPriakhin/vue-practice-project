@@ -1,6 +1,6 @@
 export async function useFetch(url,options)
 {
-    return await fetch(`${process.env.VUE_APP_DOMAIN}${url}`,options)
+    return await fetch(`${process.env.VUE_APP_DOMAIN}${url}`, options)
     .then((response) =>
     {
         if(response.ok && response.status < 400) return response.json();

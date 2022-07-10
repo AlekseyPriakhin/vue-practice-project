@@ -1,8 +1,21 @@
+import { HTTPRequestOptions } from '@/use/httpRequestOptions';
 import { useFetch } from '../use/fetch'
 const url = `/session`
 
 export async function login(router, login, password) {
-    const respone = await useFetch(url, getOptions(login, password))
+
+    const options = new HTTPRequestOptions()
+    .useMethod('POST')
+    .useBody(JSON.stringify({ login, password }))
+    .useHeaders(
+        {
+            'Content-Type': 'application/json'
+        }
+    )
+    .getOptions();
+
+    
+    const respone = await useFetch(url, options)
     
     if (respone) {
         setTokens(respone);
@@ -28,20 +41,6 @@ export function checkAuth() {
     return true
 }
 
-
-function getOptions(login, password) {
-
-    const options = {
-        method: 'POST',
-        body: JSON.stringify({ login, password }),
-        headers:
-        {
-            'Content-Type': 'application/json'
-        }
-    }
-
-    return options;
-}
 
 
 

@@ -70,7 +70,7 @@ const tableHeaders = ref(
 onMounted(async () => setRecords());
 
 const setRecords = async (page) => {
-  const result = await getRecords(page, searchQueryString, sortOptions);
+  const result = await getRecords(page, searchQueryString, sortOptions, per_page);
   if (result) {
     tableRecords.value = result.data;
     if (tableRecords.value.length < per_page) {
@@ -86,19 +86,19 @@ const setRecords = async (page) => {
 const onSort = (header) => {
   header.isDesc = !header.isDesc;
 
-  const value = sortOptions.findIndex((option) => option.id === header.id);
-  if (value !== -1) sortOptions[value].isDesc = header.isDesc;
+  const index = sortOptions.findIndex((option) => option.id === header.id);
+  if (index !== -1) sortOptions[index].isDesc = header.isDesc;
   else {
     sortOptions.push(header);
     sortOptions.sort((a, b) => a.priority - b.priority);
   }
-  setRecords();
+  setRecords(currentPage.value);
 };
 
 const search = (queryString) =>
 {
   searchQueryString = queryString
-  setRecords();
+  setRecords(1);
 };
 
 </script>
