@@ -1,11 +1,12 @@
 <template>
   <div :class="style['background']">
     <LoginForm />
-    <Button 
-      :name="chatBtnName"
+    <button 
       class="material-icons"
       :class="[style['chat-btn'],style['chat']]"
-    />
+    >
+      chat
+    </button>
   </div>
 </template>
 
@@ -14,12 +15,10 @@
 
 import { useCssModule} from 'vue'
 
-import Button from '../components/ButtonComponent.vue'
 import LoginForm from '../components/LoginForm.vue'
 
 const style = useCssModule();
 
-const chatBtnName = "chat";
 
 </script>
 

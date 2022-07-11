@@ -4,34 +4,37 @@
       class="material-icons"
       :class="style['previous']"
     >
-      <Button 
-        :name="prevButtonName"
+      <button 
         :disabled="isFirstPage"
-        @button-click="onPreviousClick"
-      />
+        @click.prevent="onPreviousClick"
+      >
+        chevron_left
+      </button>
     </li>
     <li
       v-for="page in pages"
       :key="page.name"
       :class="[style['pagination-item'], style['page-btn-with-num']]"
     > 
-      <Button
-        :name="String(page.name)"
+      <button
         :disabled="page.isDisabled"
         :class="{ [style.active]: page.isDisabled }"
-        @button-click="onClickPage(page.name)"
-      />
+        @click.prevent="onClickPage(page.name)"
+      >
+        {{ page.name }}
+      </button>
     </li>
 
     <li 
       class="material-icons"
       :class="style['next']"
     >
-      <Button 
-        :name="nextButtonName"
+      <button 
         :disabled="isLastPage"
-        @button-click="onNextClick"
-      />
+        @click.prevent="onNextClick"
+      >
+        chevron_right
+      </button>
     </li>
   </ul>
 </template>
@@ -41,7 +44,6 @@
 
 import { toRef, computed, defineProps, defineEmits, useCssModule} from "vue";
 
-import Button from "./ButtonComponent.vue"
 
 const emits = defineEmits(["toPage"]);
 
@@ -61,9 +63,6 @@ const props = defineProps({
 const style = useCssModule();
 
 const maxVisibleButtons = 6;
-
-const prevButtonName = "chevron_left";
-const nextButtonName = "chevron_right";
 
 const totalPages = toRef(props, "totalPages");
 const currentPage = toRef(props, "cp");

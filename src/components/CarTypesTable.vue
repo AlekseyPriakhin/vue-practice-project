@@ -9,11 +9,12 @@
             :key="header.id"
             :style="{width: header.widthInPercents + '%'}"
           >
-            <Button 
-              :name="header.name"
+            <button 
               :class="style['sort-button']"
-              @button-click="onSort(header)"
-            />
+              @click.prevent="onSort(header)"
+            >
+              {{ header.name }}
+            </button>
             <TableSortArrows :option="header.isDesc" />
           </td>
         </tr>
@@ -46,7 +47,6 @@ import { getRecords } from "../services/CarTypesService.js";
 
 import Pagination from "./TablePagination.vue";
 import TableSortArrows from "./TableSortArrows.vue";
-import Button from "./ButtonComponent.vue";
 import SearchField from './SearchField.vue'
 
 const style = useCssModule();
